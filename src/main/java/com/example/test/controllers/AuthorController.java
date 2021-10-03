@@ -1,10 +1,9 @@
-package com.example.test.Controllers;
+package com.example.test.controllers;
 
-import com.example.test.Models.Author;
-
-import com.example.test.Models.Book;
 import com.example.test.dao.AuthorDAO;
-import com.example.test.dao.BookDAO;
+import com.example.test.model.Author;
+import com.example.test.model.Book;
+
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class AuthorController {
     private AuthorDAO authorDAO;
-    private BookDAO bookDAO;
+
 
     @PostMapping
     private Author saveAuthor(@RequestBody Author author){
@@ -27,20 +26,19 @@ public class AuthorController {
 
     @GetMapping("/{id}")
     public Author getAuthor(@PathVariable int id){
-        return  authorDAO.findById(id).get();
+        return  authorDAO.findById(id).orElse(new Author("John","Dow"));
     }
 
     @GetMapping
     public List<Author> allAuthors(){
-        List<Author> authors = authorDAO.findAll();
-        return authors;
+       return authorDAO.findAll();
     }
 
 
     @PatchMapping
     public Author updateAuthor(@RequestBody Author authorFromRequest){
         Author authorFromDB = authorDAO.getById(authorFromRequest.getId());
-        return  authorDAO.save(authorFromRequest);
+        return  authorDAO.save(authorFromDB);
     }
 
 
@@ -51,8 +49,8 @@ public class AuthorController {
 
     @GetMapping("/{id}/books")
     public List<Book> getAuthorsBooks(@PathVariable int id){
-        List<Book> books = authorDAO.findById(id).get().getBooks();
-        return books;
+        return authorDAO.findById(id).get().getBooks();
+
     }
 }
 

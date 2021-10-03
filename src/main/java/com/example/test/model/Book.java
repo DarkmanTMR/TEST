@@ -1,17 +1,16 @@
-package com.example.test.Models;
+package com.example.test.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 
 import javax.persistence.*;
 import java.util.List;
 
+
 @Entity
 @Getter
 @Setter
-@ToString(exclude = {"author"})
+@ToString
 @NoArgsConstructor
 
 public class Book {
@@ -20,6 +19,7 @@ public class Book {
     private int id;
     private String title;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Author> authors;
     private int price;
 
@@ -27,4 +27,6 @@ public class Book {
         this.title = title;
         this.price = price;
     }
+
+
 }

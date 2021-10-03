@@ -1,7 +1,7 @@
-package com.example.test.Controllers;
+package com.example.test.controllers;
 
-import com.example.test.Models.Author;
-import com.example.test.Models.Book;
+import com.example.test.model.Author;
+import com.example.test.model.Book;
 import com.example.test.dao.BookDAO;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,20 +24,19 @@ public class BookController {
     }
     @GetMapping
     public List<Book> allBooks(){
-        List<Book> books = bookDAO.findAll();
-        return books;
+        return bookDAO.findAll();
     }
 
     @GetMapping("/{id}")
     public Book getBook(@PathVariable int id){
-        return bookDAO.findById(id).get();
+        return bookDAO.findById(id).orElse(new Book("Java",100500));
     }
 
     @PatchMapping
-    public Book updateBook(@RequestBody Book bookFromRequest){
+    public Book updateBook(@RequestBody Book bookFromRequest) {
         Book bookFromDB = bookDAO.getById(bookFromRequest.getId());
-        return bookDAO.save(bookFromRequest);
-             }
+        return bookDAO.save(bookFromDB);
+    }
 
 
     @DeleteMapping("/{id}")
@@ -47,8 +46,7 @@ public class BookController {
 
     @GetMapping("/{id}/authors")
     public List<Author> getBooksAuthors(@PathVariable int id){
-        List<Author> authors = bookDAO.findById(id).get().getAuthors();
-        return authors;
+        return bookDAO.findById(id).get().getAuthors();
     }
 
 }
