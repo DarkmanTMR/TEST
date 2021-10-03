@@ -26,7 +26,7 @@ public class AuthorController {
 
     @GetMapping("/{id}")
     public Author getAuthor(@PathVariable int id){
-        return  authorDAO.findById(id).orElse(new Author("John","Dow"));
+        return  authorDAO.findById(id).orElse(new Author("John","Snow"));
     }
 
     @GetMapping
